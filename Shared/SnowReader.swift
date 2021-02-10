@@ -53,9 +53,8 @@ struct SnowReader {
     mutating func readImage() -> CGImage? {
         // Here we convert to raw bitmap data: ARGB, un-paletted
         var converted = Data(count: metadata.bytesPerPixel * width * height)
-        var conversionLocation = 0
         
-        for _ in 0..<width {
+        for x in 0..<width {
             let off: Int
             let len: Int
             if metadata.contains(.clip) {
@@ -66,7 +65,6 @@ struct SnowReader {
                     return nil
                 }
                 // skipped bytes will keep zeroed bytes
-                conversionLocation += metadata.bytesPerPixel * off
             } else {
                 off = 0
                 len = height
@@ -76,28 +74,22 @@ struct SnowReader {
                 if metadata.contains(.paletteCompression) {
                     fatalError("Palette compression not implemented yet")
                 } else {
-                    for _ in off ..< off + len {
+                    for y in off ..< off + len {
+                        let convLocation = height * y * metadata.bytesPerPixel + x * metadata.bytesPerPixel
                         let pal = Int(readByte()) * metadata.bytesPerPixel
-                        converted[conversionLocation...(conversionLocation + metadata.bytesPerPixel - 1)] = palette.bytes[pal ... (pal + metadata.bytesPerPixel - 1)]
-                        conversionLocation += 1
+                        converted[convLocation...(convLocation + metadata.bytesPerPixel - 1)] = palette.bytes[pal ... (pal + metadata.bytesPerPixel - 1)]
                     }
                 }
             } else {
-                for _ in off ..< off + len {
-                    convertBytes(into: &converted, at: &conversionLocation)
+                for y in off ..< off + len {
+                    let convLocation = height * y * metadata.bytesPerPixel + x * metadata.bytesPerPixel
+                    converted[convLocation...(convLocation + metadata.bytesPerPixel - 1)] = source[location ... (location + metadata.bytesPerPixel - 1)]
+                    location += metadata.bytesPerPixel
                 }
             }
-            
-            conversionLocation += metadata.bytesPerPixel * (height - len - off)
         }
         
         return CGImage(width: width, height: height, bitsPerComponent: 8, bitsPerPixel: 8 * metadata.bytesPerPixel, bytesPerRow: metadata.bytesPerPixel * width, space: CGColorSpace(name: metadata.contains(.grayscale) ? CGColorSpace.linearGray : CGColorSpace.sRGB)!, bitmapInfo: [CGBitmapInfo(rawValue: (metadata.contains(.alpha) ? CGImageAlphaInfo.last : CGImageAlphaInfo.none).rawValue)], provider: CGDataProvider(data: converted as CFData)!, decode: nil, shouldInterpolate: false, intent: .defaultIntent)
-    }
-    
-    private mutating func convertBytes(into converted: inout Data, at: inout Int) {
-        converted[at...(at + metadata.bytesPerPixel - 1)] = source[location ... (location + metadata.bytesPerPixel - 1)]
-        at += metadata.bytesPerPixel
-        location += metadata.bytesPerPixel
     }
     
     private mutating func skip(bytes: Int) {
