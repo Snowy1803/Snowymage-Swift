@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import AppKit
+import CoreGraphics
 
 struct SnowReader {
     var source: Data

@@ -18,7 +18,7 @@ struct ContentView: View {
     var body: some View {
         Group {
             #if os(iOS)
-            Image(UIImage(document.image))
+            Image(uiImage: UIImage(cgImage: document.image)).resizable().aspectRatio(contentMode: .fit)
             #else
             Image(nsImage: NSImage(cgImage: document.image, size: NSSize(width: document.image.width, height: document.image.height))).resizable().aspectRatio(contentMode: .fit)
             #endif
