@@ -9,8 +9,8 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 extension UTType {
-    static var exampleText: UTType {
-        UTType(importedAs: "com.example.plain-text")
+    static var sni: UTType {
+        UTType(exportedAs: "fr.orbisec.sni")
     }
 }
 
@@ -21,7 +21,9 @@ struct SnowymageDocument: FileDocument {
         self.text = text
     }
 
-    static var readableContentTypes: [UTType] { [.exampleText] }
+    static var readableContentTypes: [UTType] { [.png, .bmp, .sni] }
+    
+    static var writableContentTypes: [UTType] { [.sni] }
 
     init(configuration: ReadConfiguration) throws {
         guard let data = configuration.file.regularFileContents,
