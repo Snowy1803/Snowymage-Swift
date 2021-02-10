@@ -20,9 +20,9 @@ struct ContentView: View {
             #if os(iOS)
             Image(UIImage(document.image))
             #else
-            Image(nsImage: NSImage(cgImage: document.image, size: NSSize(width: document.image.width / 4, height: document.image.height / 4)))
+            Image(nsImage: NSImage(cgImage: document.image, size: NSSize(width: document.image.width, height: document.image.height))).resizable().aspectRatio(contentMode: .fit)
             #endif
-        }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+        }.frame(minWidth: 30, maxWidth: .infinity, minHeight: 30, maxHeight: .infinity, alignment: .center)
     }
 }
 

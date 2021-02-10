@@ -37,6 +37,7 @@ struct SnowReader {
         if metadata.contains(.palette) {
             let size = Int(readByte())
             let data = source[location ... location + (size * metadata.bytesPerPixel) - 1]
+            location += size * metadata.bytesPerPixel
             let palette = SnowPalette(colors: size, bytes: data)
             self.palette = palette
             
@@ -72,11 +73,24 @@ struct SnowReader {
             
             if let palette = palette {
                 if metadata.contains(.paletteCompression) {
-                    fatalError("Palette compression not implemented yet")
+                    var currByte = Int(readByte())
+                    var j = 0
+                    for y in off ..< off + len {
+                        let convLocation = height * y * metadata.bytesPerPixel + x * metadata.bytesPerPixel
+                        if j == cmpixelsPerByte {
+                            currByte = Int(readByte())
+                            j = 0
+                        }
+                        let b = currByte % (palette.colors + 1) - 1
+                        currByte /= (palette.colors + 1)
+                        let pal = palette.bytes.startIndex + b * metadata.bytesPerPixel
+                        converted[convLocation...(convLocation + metadata.bytesPerPixel - 1)] = palette.bytes[pal ... (pal + metadata.bytesPerPixel - 1)]
+                        j += 1
+                    }
                 } else {
                     for y in off ..< off + len {
                         let convLocation = height * y * metadata.bytesPerPixel + x * metadata.bytesPerPixel
-                        let pal = Int(readByte()) * metadata.bytesPerPixel
+                        let pal = palette.bytes.startIndex + Int(readByte()) * metadata.bytesPerPixel
                         converted[convLocation...(convLocation + metadata.bytesPerPixel - 1)] = palette.bytes[pal ... (pal + metadata.bytesPerPixel - 1)]
                     }
                 }
