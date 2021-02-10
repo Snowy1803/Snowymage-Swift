@@ -24,6 +24,6 @@ struct SnowMetadata: OptionSet {
 
 extension SnowMetadata: CustomStringConvertible {
     var description: String {
-        "SnowMetadata \(rawValue) [alpha=\(self.contains(.alpha)), grayscaled=\(self.contains(.grayscale)), palette=\(self.contains(.palette) ? self.contains(.paletteCompression) ? "compressed" : "uncompressed" : "none"), grayscaled=\(self.contains(.grayscale))]"
+        "SnowMetadata \(rawValue) [alpha=\(self.contains(.alpha)), grayscaled=\(self.contains(.grayscale)), palette=\(self.contains(.palette) ? self.contains(.paletteCompression) ? "compressed" : "uncompressed" : "none"), clip=\(self.contains(.clip)), small=\(self.contains(.small))]"
     }
 }

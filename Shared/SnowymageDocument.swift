@@ -15,27 +15,41 @@ extension UTType {
 }
 
 struct SnowymageDocument: FileDocument {
-    var text: String
+    var image: CGImage
 
-    init(text: String = "Hello, world!") {
-        self.text = text
+    init(image: CGImage) {
+        self.image = image
     }
 
-    static var readableContentTypes: [UTType] { [.png, .bmp, .sni] }
+    static var readableContentTypes: [UTType] { [.png, .sni] }
     
     static var writableContentTypes: [UTType] { [.sni] }
 
     init(configuration: ReadConfiguration) throws {
-        guard let data = configuration.file.regularFileContents,
-              let string = String(data: data, encoding: .utf8)
-        else {
+        guard let data = configuration.file.regularFileContents else {
             throw CocoaError(.fileReadCorruptFile)
         }
-        text = string
+        switch configuration.contentType {
+        case .png:
+            guard let provider = CGDataProvider(data: data as CFData),
+                  let img = CGImage(pngDataProviderSource: provider, decode: nil, shouldInterpolate: false, intent: .defaultIntent) else {
+                throw CocoaError(.fileReadCorruptFile)
+            }
+            image = img
+        case .sni:
+            var reader = SnowReader(source: data)
+            guard let img = reader.read() else {
+                throw CocoaError(.fileReadCorruptFile)
+            }
+            image = img
+        default:
+            throw CocoaError(.fileReadUnsupportedScheme)
+        }
     }
     
     func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
-        let data = text.data(using: .utf8)!
-        return .init(regularFileWithContents: data)
+        throw CocoaError(.featureUnsupported)
+//        let data = text.data(using: .utf8)!
+//        return .init(regularFileWithContents: data)
     }
 }

@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct SnowymageApp: App {
     var body: some Scene {
-        DocumentGroup(newDocument: SnowymageDocument()) { file in
+        DocumentGroup(viewing: SnowymageDocument.self) { file in
             ContentView(document: file.$document)
         }
     }
