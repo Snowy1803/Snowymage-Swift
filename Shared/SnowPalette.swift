@@ -11,3 +11,9 @@ struct SnowPalette {
     var colors: Int
     var bytes: Data
 }
+
+//extension SnowPalette {
+//    init(metadata: SnowMetadata, withRawData rawData: Data) {
+//        
+//    }
+//}

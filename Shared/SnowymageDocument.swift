@@ -23,7 +23,7 @@ struct SnowymageDocument: FileDocument {
 
     static var readableContentTypes: [UTType] { [.png, .sni] }
     
-    static var writableContentTypes: [UTType] { [.sni] }
+    static var writableContentTypes: [UTType] { [.png, .sni] }
 
     init(configuration: ReadConfiguration) throws {
         guard let data = configuration.file.regularFileContents else {
@@ -48,8 +48,27 @@ struct SnowymageDocument: FileDocument {
     }
     
     func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
-        throw CocoaError(.featureUnsupported)
-//        let data = text.data(using: .utf8)!
-//        return .init(regularFileWithContents: data)
+        switch configuration.contentType {
+        case .png:
+            guard let data = CFDataCreateMutable(nil, 0) else {
+                throw CocoaError(.fileWriteOutOfSpace)
+            }
+            guard let dest = CGImageDestinationCreateWithData(data, kUTTypePNG, 1, nil) else {
+                throw CocoaError(.fileWriteUnsupportedScheme)
+            }
+            CGImageDestinationAddImage(dest, image, nil)
+            guard CGImageDestinationFinalize(dest) else {
+                throw CocoaError(.fileWriteUnknown)
+            }
+            return .init(regularFileWithContents: data as Data)
+        case .sni:
+            guard var writer = SnowWriter(source: image),
+                  let data = writer.write() else {
+                throw CocoaError(.fileWriteUnsupportedScheme)
+            }
+            return .init(regularFileWithContents: data as Data)
+        default:
+            throw CocoaError(.fileReadUnsupportedScheme)
+        }
     }
 }
