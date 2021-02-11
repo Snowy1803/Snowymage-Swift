@@ -8,8 +8,10 @@
 import UIKit
 import QuickLook
 
-class PreviewViewController: UIViewController, QLPreviewingController {
+class PreviewViewController: UIViewController, QLPreviewingController, UIScrollViewDelegate {
         
+    var imageView: UIImageView?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -45,17 +47,23 @@ class PreviewViewController: UIViewController, QLPreviewingController {
             
             let image = UIImage(cgImage: img)
             
+            print(self.view.frame)
+            
             let imageView = UIImageView(image: image)
+            imageView.frame = view.bounds
             imageView.contentMode = .scaleAspectFit
-            imageView.isUserInteractionEnabled = true
-            imageView.translatesAutoresizingMaskIntoConstraints = false
             
-            self.view.addSubview(imageView)
+            let scrollView = UIScrollView()
+            scrollView.frame = view.bounds
+            scrollView.minimumZoomScale = 1
+            scrollView.maximumZoomScale = 6
+            scrollView.delegate = self
+            scrollView.showsVerticalScrollIndicator = false
+            scrollView.addSubview(imageView)
             
-            imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-            imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-            imageView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-            imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+            self.imageView = imageView
+            
+            self.view.addSubview(scrollView)
             
             // Call the completion handler so Quick Look knows that the preview is fully loaded.
             // Quick Look will display a loading spinner while the completion handler is not called.
@@ -65,5 +73,8 @@ class PreviewViewController: UIViewController, QLPreviewingController {
             handler(e)
         }
     }
-
+    
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        imageView
+    }
 }
