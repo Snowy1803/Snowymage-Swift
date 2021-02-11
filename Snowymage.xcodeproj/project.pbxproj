@@ -28,6 +28,13 @@
 		20B6B7B925D5661A0004B9CB /* SnowMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B6B79925D45E1D0004B9CB /* SnowMetadata.swift */; };
 		20B6B7BA25D5661D0004B9CB /* SnowPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B6B79F25D468850004B9CB /* SnowPalette.swift */; };
 		20B6B7BB25D5661F0004B9CB /* SnowReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B6B79C25D462D20004B9CB /* SnowReader.swift */; };
+		20B6B7C225D571BB0004B9CB /* QuickLookThumbnailing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20B6B7C125D571BB0004B9CB /* QuickLookThumbnailing.framework */; };
+		20B6B7C325D571BB0004B9CB /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20B6B7A825D55F870004B9CB /* Quartz.framework */; };
+		20B6B7C625D571BB0004B9CB /* ThumbnailProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B6B7C525D571BB0004B9CB /* ThumbnailProvider.swift */; };
+		20B6B7CB25D571BB0004B9CB /* Thumbnail Mac.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 20B6B7C025D571BB0004B9CB /* Thumbnail Mac.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		20B6B7CF25D572E40004B9CB /* SnowMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B6B79925D45E1D0004B9CB /* SnowMetadata.swift */; };
+		20B6B7D025D572E60004B9CB /* SnowPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B6B79F25D468850004B9CB /* SnowPalette.swift */; };
+		20B6B7D125D572E90004B9CB /* SnowReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B6B79C25D462D20004B9CB /* SnowReader.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +45,13 @@
 			remoteGlobalIDString = 20B6B7A525D55F870004B9CB;
 			remoteInfo = QuickLook;
 		};
+		20B6B7C925D571BB0004B9CB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 20B6B77025D45B130004B9CB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 20B6B7BF25D571BB0004B9CB;
+			remoteInfo = "Thumbnail Mac";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -47,6 +61,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				20B6B7CB25D571BB0004B9CB /* Thumbnail Mac.appex in Embed App Extensions */,
 				20B6B7B425D55F880004B9CB /* QuickLook.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
@@ -73,6 +88,11 @@
 		20B6B7AE25D55F870004B9CB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/PreviewViewController.xib; sourceTree = "<group>"; };
 		20B6B7B025D55F870004B9CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		20B6B7B125D55F880004B9CB /* QuickLook.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = QuickLook.entitlements; sourceTree = "<group>"; };
+		20B6B7C025D571BB0004B9CB /* Thumbnail Mac.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Thumbnail Mac.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		20B6B7C125D571BB0004B9CB /* QuickLookThumbnailing.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLookThumbnailing.framework; path = System/Library/Frameworks/QuickLookThumbnailing.framework; sourceTree = SDKROOT; };
+		20B6B7C525D571BB0004B9CB /* ThumbnailProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailProvider.swift; sourceTree = "<group>"; };
+		20B6B7C725D571BB0004B9CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		20B6B7C825D571BB0004B9CB /* Thumbnail_Mac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Thumbnail_Mac.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +118,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		20B6B7BD25D571BB0004B9CB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				20B6B7C225D571BB0004B9CB /* QuickLookThumbnailing.framework in Frameworks */,
+				20B6B7C325D571BB0004B9CB /* Quartz.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -108,6 +137,7 @@
 				20B6B77F25D45B140004B9CB /* iOS */,
 				20B6B78625D45B140004B9CB /* macOS */,
 				20B6B7AA25D55F870004B9CB /* QuickLook */,
+				20B6B7C425D571BB0004B9CB /* Thumbnail Mac */,
 				20B6B7A725D55F870004B9CB /* Frameworks */,
 				20B6B77E25D45B140004B9CB /* Products */,
 			);
@@ -133,6 +163,7 @@
 				20B6B77D25D45B140004B9CB /* Snowymage.app */,
 				20B6B78525D45B140004B9CB /* Snowymage.app */,
 				20B6B7A625D55F870004B9CB /* QuickLook.appex */,
+				20B6B7C025D571BB0004B9CB /* Thumbnail Mac.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -158,6 +189,7 @@
 			isa = PBXGroup;
 			children = (
 				20B6B7A825D55F870004B9CB /* Quartz.framework */,
+				20B6B7C125D571BB0004B9CB /* QuickLookThumbnailing.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -171,6 +203,16 @@
 				20B6B7B125D55F880004B9CB /* QuickLook.entitlements */,
 			);
 			path = QuickLook;
+			sourceTree = "<group>";
+		};
+		20B6B7C425D571BB0004B9CB /* Thumbnail Mac */ = {
+			isa = PBXGroup;
+			children = (
+				20B6B7C525D571BB0004B9CB /* ThumbnailProvider.swift */,
+				20B6B7C725D571BB0004B9CB /* Info.plist */,
+				20B6B7C825D571BB0004B9CB /* Thumbnail_Mac.entitlements */,
+			);
+			path = "Thumbnail Mac";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -206,6 +248,7 @@
 			);
 			dependencies = (
 				20B6B7B325D55F880004B9CB /* PBXTargetDependency */,
+				20B6B7CA25D571BB0004B9CB /* PBXTargetDependency */,
 			);
 			name = "Snowymage (macOS)";
 			productName = "Snowymage (macOS)";
@@ -229,6 +272,23 @@
 			productReference = 20B6B7A625D55F870004B9CB /* QuickLook.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		20B6B7BF25D571BB0004B9CB /* Thumbnail Mac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 20B6B7CC25D571BB0004B9CB /* Build configuration list for PBXNativeTarget "Thumbnail Mac" */;
+			buildPhases = (
+				20B6B7BC25D571BB0004B9CB /* Sources */,
+				20B6B7BD25D571BB0004B9CB /* Frameworks */,
+				20B6B7BE25D571BB0004B9CB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Thumbnail Mac";
+			productName = "Thumbnail Mac";
+			productReference = 20B6B7C025D571BB0004B9CB /* Thumbnail Mac.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -245,6 +305,9 @@
 						CreatedOnToolsVersion = 12.5;
 					};
 					20B6B7A525D55F870004B9CB = {
+						CreatedOnToolsVersion = 12.5;
+					};
+					20B6B7BF25D571BB0004B9CB = {
 						CreatedOnToolsVersion = 12.5;
 					};
 				};
@@ -265,6 +328,7 @@
 				20B6B77C25D45B140004B9CB /* Snowymage (iOS) */,
 				20B6B78425D45B140004B9CB /* Snowymage (macOS) */,
 				20B6B7A525D55F870004B9CB /* QuickLook */,
+				20B6B7BF25D571BB0004B9CB /* Thumbnail Mac */,
 			);
 		};
 /* End PBXProject section */
@@ -291,6 +355,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				20B6B7AF25D55F870004B9CB /* PreviewViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		20B6B7BE25D571BB0004B9CB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -334,6 +405,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		20B6B7BC25D571BB0004B9CB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				20B6B7C625D571BB0004B9CB /* ThumbnailProvider.swift in Sources */,
+				20B6B7D125D572E90004B9CB /* SnowReader.swift in Sources */,
+				20B6B7CF25D572E40004B9CB /* SnowMetadata.swift in Sources */,
+				20B6B7D025D572E60004B9CB /* SnowPalette.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -341,6 +423,11 @@
 			isa = PBXTargetDependency;
 			target = 20B6B7A525D55F870004B9CB /* QuickLook */;
 			targetProxy = 20B6B7B225D55F880004B9CB /* PBXContainerItemProxy */;
+		};
+		20B6B7CA25D571BB0004B9CB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 20B6B7BF25D571BB0004B9CB /* Thumbnail Mac */;
+			targetProxy = 20B6B7C925D571BB0004B9CB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -606,6 +693,50 @@
 			};
 			name = Release;
 		};
+		20B6B7CD25D571BB0004B9CB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Thumbnail Mac/Thumbnail_Mac.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = PKKP3P6RGM;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = "Thumbnail Mac/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.2;
+				PRODUCT_BUNDLE_IDENTIFIER = "fr.orbisec.Snowymage.Thumbnail-Mac";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		20B6B7CE25D571BB0004B9CB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Thumbnail Mac/Thumbnail_Mac.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = PKKP3P6RGM;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = "Thumbnail Mac/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.2;
+				PRODUCT_BUNDLE_IDENTIFIER = "fr.orbisec.Snowymage.Thumbnail-Mac";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -641,6 +772,15 @@
 			buildConfigurations = (
 				20B6B7B625D55F880004B9CB /* Debug */,
 				20B6B7B725D55F880004B9CB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		20B6B7CC25D571BB0004B9CB /* Build configuration list for PBXNativeTarget "Thumbnail Mac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				20B6B7CD25D571BB0004B9CB /* Debug */,
+				20B6B7CE25D571BB0004B9CB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
