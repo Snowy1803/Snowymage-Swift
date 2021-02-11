@@ -35,6 +35,12 @@
 		20B6B7CF25D572E40004B9CB /* SnowMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B6B79925D45E1D0004B9CB /* SnowMetadata.swift */; };
 		20B6B7D025D572E60004B9CB /* SnowPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B6B79F25D468850004B9CB /* SnowPalette.swift */; };
 		20B6B7D125D572E90004B9CB /* SnowReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B6B79C25D462D20004B9CB /* SnowReader.swift */; };
+		20B6B7D725D5781F0004B9CB /* QuickLookThumbnailing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20B6B7C125D571BB0004B9CB /* QuickLookThumbnailing.framework */; };
+		20B6B7DE25D5781F0004B9CB /* Thumbnail iOS.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 20B6B7D625D5781F0004B9CB /* Thumbnail iOS.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		20B6B7E325D578510004B9CB /* ThumbnailProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B6B7C525D571BB0004B9CB /* ThumbnailProvider.swift */; };
+		20B6B7E425D578540004B9CB /* SnowMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B6B79925D45E1D0004B9CB /* SnowMetadata.swift */; };
+		20B6B7E525D578560004B9CB /* SnowPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B6B79F25D468850004B9CB /* SnowPalette.swift */; };
+		20B6B7E625D578580004B9CB /* SnowReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B6B79C25D462D20004B9CB /* SnowReader.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +58,13 @@
 			remoteGlobalIDString = 20B6B7BF25D571BB0004B9CB;
 			remoteInfo = "Thumbnail Mac";
 		};
+		20B6B7DC25D5781F0004B9CB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 20B6B77025D45B130004B9CB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 20B6B7D525D5781F0004B9CB;
+			remoteInfo = "Thumbnail iOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -63,6 +76,17 @@
 			files = (
 				20B6B7CB25D571BB0004B9CB /* Thumbnail Mac.appex in Embed App Extensions */,
 				20B6B7B425D55F880004B9CB /* QuickLook.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		20B6B7E225D5781F0004B9CB /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				20B6B7DE25D5781F0004B9CB /* Thumbnail iOS.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -93,6 +117,8 @@
 		20B6B7C525D571BB0004B9CB /* ThumbnailProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailProvider.swift; sourceTree = "<group>"; };
 		20B6B7C725D571BB0004B9CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		20B6B7C825D571BB0004B9CB /* Thumbnail_Mac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Thumbnail_Mac.entitlements; sourceTree = "<group>"; };
+		20B6B7D625D5781F0004B9CB /* Thumbnail iOS.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Thumbnail iOS.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		20B6B7DB25D5781F0004B9CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +153,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		20B6B7D325D5781F0004B9CB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				20B6B7D725D5781F0004B9CB /* QuickLookThumbnailing.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -138,6 +172,7 @@
 				20B6B78625D45B140004B9CB /* macOS */,
 				20B6B7AA25D55F870004B9CB /* QuickLook */,
 				20B6B7C425D571BB0004B9CB /* Thumbnail Mac */,
+				20B6B7D825D5781F0004B9CB /* Thumbnail iOS */,
 				20B6B7A725D55F870004B9CB /* Frameworks */,
 				20B6B77E25D45B140004B9CB /* Products */,
 			);
@@ -164,6 +199,7 @@
 				20B6B78525D45B140004B9CB /* Snowymage.app */,
 				20B6B7A625D55F870004B9CB /* QuickLook.appex */,
 				20B6B7C025D571BB0004B9CB /* Thumbnail Mac.appex */,
+				20B6B7D625D5781F0004B9CB /* Thumbnail iOS.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -215,6 +251,14 @@
 			path = "Thumbnail Mac";
 			sourceTree = "<group>";
 		};
+		20B6B7D825D5781F0004B9CB /* Thumbnail iOS */ = {
+			isa = PBXGroup;
+			children = (
+				20B6B7DB25D5781F0004B9CB /* Info.plist */,
+			);
+			path = "Thumbnail iOS";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -225,10 +269,12 @@
 				20B6B77925D45B140004B9CB /* Sources */,
 				20B6B77A25D45B140004B9CB /* Frameworks */,
 				20B6B77B25D45B140004B9CB /* Resources */,
+				20B6B7E225D5781F0004B9CB /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				20B6B7DD25D5781F0004B9CB /* PBXTargetDependency */,
 			);
 			name = "Snowymage (iOS)";
 			productName = "Snowymage (iOS)";
@@ -289,6 +335,23 @@
 			productReference = 20B6B7C025D571BB0004B9CB /* Thumbnail Mac.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		20B6B7D525D5781F0004B9CB /* Thumbnail iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 20B6B7DF25D5781F0004B9CB /* Build configuration list for PBXNativeTarget "Thumbnail iOS" */;
+			buildPhases = (
+				20B6B7D225D5781F0004B9CB /* Sources */,
+				20B6B7D325D5781F0004B9CB /* Frameworks */,
+				20B6B7D425D5781F0004B9CB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Thumbnail iOS";
+			productName = "Thumbnail iOS";
+			productReference = 20B6B7D625D5781F0004B9CB /* Thumbnail iOS.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -310,6 +373,9 @@
 					20B6B7BF25D571BB0004B9CB = {
 						CreatedOnToolsVersion = 12.5;
 					};
+					20B6B7D525D5781F0004B9CB = {
+						CreatedOnToolsVersion = 12.5;
+					};
 				};
 			};
 			buildConfigurationList = 20B6B77325D45B130004B9CB /* Build configuration list for PBXProject "Snowymage" */;
@@ -329,6 +395,7 @@
 				20B6B78425D45B140004B9CB /* Snowymage (macOS) */,
 				20B6B7A525D55F870004B9CB /* QuickLook */,
 				20B6B7BF25D571BB0004B9CB /* Thumbnail Mac */,
+				20B6B7D525D5781F0004B9CB /* Thumbnail iOS */,
 			);
 		};
 /* End PBXProject section */
@@ -359,6 +426,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		20B6B7BE25D571BB0004B9CB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		20B6B7D425D5781F0004B9CB /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -416,6 +490,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		20B6B7D225D5781F0004B9CB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				20B6B7E325D578510004B9CB /* ThumbnailProvider.swift in Sources */,
+				20B6B7E625D578580004B9CB /* SnowReader.swift in Sources */,
+				20B6B7E425D578540004B9CB /* SnowMetadata.swift in Sources */,
+				20B6B7E525D578560004B9CB /* SnowPalette.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -428,6 +513,11 @@
 			isa = PBXTargetDependency;
 			target = 20B6B7BF25D571BB0004B9CB /* Thumbnail Mac */;
 			targetProxy = 20B6B7C925D571BB0004B9CB /* PBXContainerItemProxy */;
+		};
+		20B6B7DD25D5781F0004B9CB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 20B6B7D525D5781F0004B9CB /* Thumbnail iOS */;
+			targetProxy = 20B6B7DC25D5781F0004B9CB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -557,6 +647,7 @@
 		20B6B79425D45B140004B9CB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
@@ -579,6 +670,7 @@
 		20B6B79525D45B140004B9CB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
@@ -737,6 +829,49 @@
 			};
 			name = Release;
 		};
+		20B6B7E025D5781F0004B9CB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = PKKP3P6RGM;
+				INFOPLIST_FILE = "Thumbnail iOS/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "fr.orbisec.Snowymage.Thumbnail-iOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		20B6B7E125D5781F0004B9CB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = PKKP3P6RGM;
+				INFOPLIST_FILE = "Thumbnail iOS/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "fr.orbisec.Snowymage.Thumbnail-iOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -781,6 +916,15 @@
 			buildConfigurations = (
 				20B6B7CD25D571BB0004B9CB /* Debug */,
 				20B6B7CE25D571BB0004B9CB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		20B6B7DF25D5781F0004B9CB /* Build configuration list for PBXNativeTarget "Thumbnail iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				20B6B7E025D5781F0004B9CB /* Debug */,
+				20B6B7E125D5781F0004B9CB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
