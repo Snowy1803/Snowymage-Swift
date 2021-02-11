@@ -27,6 +27,7 @@ struct SnowWriter {
         if metadata == nil {
             deduceMetadata()
         }
+        normalizeMetadata()
         guard self.metadata.validate() else {
             throw SnowWriterError.invalidMetadata
         }
@@ -51,6 +52,9 @@ struct SnowWriter {
         } else {
             metadata.remove(.grayscale)
         }
+    }
+    
+    mutating func normalizeMetadata() {
         if source.width < 256 && source.height < 256 {
             metadata.insert(.small)
         } else {
