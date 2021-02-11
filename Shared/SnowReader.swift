@@ -104,6 +104,9 @@ struct SnowReader {
                 }
             }
         }
+        guard location == source.endIndex else {
+            throw SnowReaderError.trailingData
+        }
         
         if let img = CGImage(width: width, height: height, bitsPerComponent: 8, bitsPerPixel: 8 * metadata.bytesPerPixel, bytesPerRow: metadata.bytesPerPixel * width, space: CGColorSpace(name: metadata.contains(.grayscale) ? CGColorSpace.linearGray : CGColorSpace.sRGB)!, bitmapInfo: [CGBitmapInfo(rawValue: (metadata.contains(.alpha) ? CGImageAlphaInfo.last : CGImageAlphaInfo.none).rawValue)], provider: CGDataProvider(data: converted as CFData)!, decode: nil, shouldInterpolate: false, intent: .defaultIntent) {
             return img

@@ -12,4 +12,5 @@ enum SnowReaderError: Error {
     case malformedClip
     case unexpectedEOF
     case decodingFailed
+    case trailingData
 }
