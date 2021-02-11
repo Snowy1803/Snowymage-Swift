@@ -20,22 +20,25 @@ struct SnowReader {
     /// no idea what it is
     var cmpixelsPerByte: Int = 1
     
-    mutating func read() -> CGImage? {
-        readHeader()
-        readPalette()
-        return readImage()
+    mutating func read() throws -> CGImage {
+        try readHeader()
+        try readPalette()
+        return try readImage()
     }
     
-    mutating func readHeader() {
-        skip(bytes: 2) // magic number SM
-        metadata = SnowMetadata(rawValue: readByte())
-        width = readPosition()
-        height = readPosition()
+    mutating func readHeader() throws {
+        try skip(bytes: 2) // magic number SM
+        metadata = SnowMetadata(rawValue: try readByte())
+        guard metadata.validate() else {
+            throw SnowReaderError.invalidMetadata
+        }
+        width = try readPosition()
+        height = try readPosition()
     }
     
-    mutating func readPalette() {
+    mutating func readPalette() throws {
         if metadata.contains(.palette) {
-            let size = Int(readByte())
+            let size = Int(try readByte())
             let data = source[location ... location + (size * metadata.bytesPerPixel) - 1]
             location += size * metadata.bytesPerPixel
             let palette = SnowPalette(colors: size, bytes: data)
@@ -51,7 +54,7 @@ struct SnowReader {
         }
     }
     
-    mutating func readImage() -> CGImage? {
+    mutating func readImage() throws -> CGImage {
         // Here we convert to raw bitmap data: ARGB, un-paletted
         var converted = Data(count: metadata.bytesPerPixel * width * height)
         
@@ -59,11 +62,10 @@ struct SnowReader {
             let off: Int
             let len: Int
             if metadata.contains(.clip) {
-                off = readPosition()
-                len = readPosition()
+                off = try readPosition()
+                len = try readPosition()
                 if len + off > height {
-                    print("Malformed SNI clip")
-                    return nil
+                    throw SnowReaderError.malformedClip
                 }
                 // skipped bytes will keep zeroed bytes
             } else {
@@ -73,12 +75,12 @@ struct SnowReader {
             
             if let palette = palette {
                 if metadata.contains(.paletteCompression) {
-                    var currByte = Int(readByte())
+                    var currByte = Int(try readByte())
                     var j = 0
                     for y in off ..< off + len {
                         let convLocation = height * y * metadata.bytesPerPixel + x * metadata.bytesPerPixel
                         if j == cmpixelsPerByte {
-                            currByte = Int(readByte())
+                            currByte = Int(try readByte())
                             j = 0
                         }
                         let b = currByte % (palette.colors + 1) - 1
@@ -90,7 +92,7 @@ struct SnowReader {
                 } else {
                     for y in off ..< off + len {
                         let convLocation = height * y * metadata.bytesPerPixel + x * metadata.bytesPerPixel
-                        let pal = palette.bytes.startIndex + Int(readByte()) * metadata.bytesPerPixel
+                        let pal = palette.bytes.startIndex + Int(try readByte()) * metadata.bytesPerPixel
                         converted[convLocation...(convLocation + metadata.bytesPerPixel - 1)] = palette.bytes[pal ... (pal + metadata.bytesPerPixel - 1)]
                     }
                 }
@@ -103,20 +105,27 @@ struct SnowReader {
             }
         }
         
-        return CGImage(width: width, height: height, bitsPerComponent: 8, bitsPerPixel: 8 * metadata.bytesPerPixel, bytesPerRow: metadata.bytesPerPixel * width, space: CGColorSpace(name: metadata.contains(.grayscale) ? CGColorSpace.linearGray : CGColorSpace.sRGB)!, bitmapInfo: [CGBitmapInfo(rawValue: (metadata.contains(.alpha) ? CGImageAlphaInfo.last : CGImageAlphaInfo.none).rawValue)], provider: CGDataProvider(data: converted as CFData)!, decode: nil, shouldInterpolate: false, intent: .defaultIntent)
+        if let img = CGImage(width: width, height: height, bitsPerComponent: 8, bitsPerPixel: 8 * metadata.bytesPerPixel, bytesPerRow: metadata.bytesPerPixel * width, space: CGColorSpace(name: metadata.contains(.grayscale) ? CGColorSpace.linearGray : CGColorSpace.sRGB)!, bitmapInfo: [CGBitmapInfo(rawValue: (metadata.contains(.alpha) ? CGImageAlphaInfo.last : CGImageAlphaInfo.none).rawValue)], provider: CGDataProvider(data: converted as CFData)!, decode: nil, shouldInterpolate: false, intent: .defaultIntent) {
+            return img
+        } else {
+            throw SnowReaderError.decodingFailed
+        }
     }
     
-    private mutating func skip(bytes: Int) {
+    private mutating func skip(bytes: Int) throws {
+        try ensureReadable(bytesAhead: 1)
         location += bytes
     }
     
-    private mutating func readByte() -> UInt8 {
+    private mutating func readByte() throws -> UInt8 {
+        try ensureReadable(bytesAhead: 1)
         let byte = source[location]
         location += 1
         return byte
     }
     
-    private mutating func readShort() -> UInt16 {
+    private mutating func readShort() throws -> UInt16 {
+        try ensureReadable(bytesAhead: 2)
         let bytes = source[location ... location + 1]
         location += 2
         var short: UInt16 = 0
@@ -126,11 +135,17 @@ struct SnowReader {
         return UInt16(bigEndian: short)
     }
     
-    private mutating func readPosition() -> Int {
+    private mutating func readPosition() throws -> Int {
         if metadata.contains(.small) {
-            return Int(readByte())
+            return Int(try readByte())
         } else {
-            return Int(readShort())
+            return Int(try readShort())
+        }
+    }
+    
+    private func ensureReadable(bytesAhead: Int) throws {
+        if location + bytesAhead > source.endIndex {
+            throw SnowReaderError.unexpectedEOF
         }
     }
 }

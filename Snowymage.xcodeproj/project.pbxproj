@@ -16,6 +16,12 @@
 		205B624B25D57A25006156E0 /* SnowReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B6B79C25D462D20004B9CB /* SnowReader.swift */; };
 		205B624D25D59DC4006156E0 /* SnowWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 205B624C25D59DC4006156E0 /* SnowWriter.swift */; };
 		205B624E25D59DC4006156E0 /* SnowWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 205B624C25D59DC4006156E0 /* SnowWriter.swift */; };
+		205B625025D5C24D006156E0 /* SnowErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 205B624F25D5C24D006156E0 /* SnowErrors.swift */; };
+		205B625125D5C24D006156E0 /* SnowErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 205B624F25D5C24D006156E0 /* SnowErrors.swift */; };
+		205B625225D5C24D006156E0 /* SnowErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 205B624F25D5C24D006156E0 /* SnowErrors.swift */; };
+		205B625325D5C24D006156E0 /* SnowErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 205B624F25D5C24D006156E0 /* SnowErrors.swift */; };
+		205B625425D5C24D006156E0 /* SnowErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 205B624F25D5C24D006156E0 /* SnowErrors.swift */; };
+		205B625525D5C24D006156E0 /* SnowErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 205B624F25D5C24D006156E0 /* SnowErrors.swift */; };
 		20B6B78925D45B140004B9CB /* SnowymageApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B6B77525D45B130004B9CB /* SnowymageApp.swift */; };
 		20B6B78A25D45B140004B9CB /* SnowymageApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B6B77525D45B130004B9CB /* SnowymageApp.swift */; };
 		20B6B78B25D45B140004B9CB /* SnowymageDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B6B77625D45B130004B9CB /* SnowymageDocument.swift */; };
@@ -117,6 +123,7 @@
 		205B624025D579FA006156E0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		205B624225D579FA006156E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		205B624C25D59DC4006156E0 /* SnowWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowWriter.swift; sourceTree = "<group>"; };
+		205B624F25D5C24D006156E0 /* SnowErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowErrors.swift; sourceTree = "<group>"; };
 		20B6B77525D45B130004B9CB /* SnowymageApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowymageApp.swift; sourceTree = "<group>"; };
 		20B6B77625D45B130004B9CB /* SnowymageDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowymageDocument.swift; sourceTree = "<group>"; };
 		20B6B77725D45B130004B9CB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -227,6 +234,7 @@
 				20B6B77625D45B130004B9CB /* SnowymageDocument.swift */,
 				20B6B79925D45E1D0004B9CB /* SnowMetadata.swift */,
 				20B6B79F25D468850004B9CB /* SnowPalette.swift */,
+				205B624F25D5C24D006156E0 /* SnowErrors.swift */,
 				20B6B79C25D462D20004B9CB /* SnowReader.swift */,
 				205B624C25D59DC4006156E0 /* SnowWriter.swift */,
 				20B6B77725D45B130004B9CB /* ContentView.swift */,
@@ -525,6 +533,7 @@
 				205B624B25D57A25006156E0 /* SnowReader.swift in Sources */,
 				205B624925D57A20006156E0 /* SnowMetadata.swift in Sources */,
 				205B624A25D57A22006156E0 /* SnowPalette.swift in Sources */,
+				205B625525D5C24D006156E0 /* SnowErrors.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -539,6 +548,7 @@
 				20B6B78B25D45B140004B9CB /* SnowymageDocument.swift in Sources */,
 				20B6B79D25D462D20004B9CB /* SnowReader.swift in Sources */,
 				20B6B78D25D45B140004B9CB /* ContentView.swift in Sources */,
+				205B625025D5C24D006156E0 /* SnowErrors.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -553,6 +563,7 @@
 				20B6B78C25D45B140004B9CB /* SnowymageDocument.swift in Sources */,
 				20B6B79E25D462D20004B9CB /* SnowReader.swift in Sources */,
 				20B6B78E25D45B140004B9CB /* ContentView.swift in Sources */,
+				205B625125D5C24D006156E0 /* SnowErrors.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -564,6 +575,7 @@
 				20B6B7BB25D5661F0004B9CB /* SnowReader.swift in Sources */,
 				20B6B7B925D5661A0004B9CB /* SnowMetadata.swift in Sources */,
 				20B6B7BA25D5661D0004B9CB /* SnowPalette.swift in Sources */,
+				205B625225D5C24D006156E0 /* SnowErrors.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -575,6 +587,7 @@
 				20B6B7D125D572E90004B9CB /* SnowReader.swift in Sources */,
 				20B6B7CF25D572E40004B9CB /* SnowMetadata.swift in Sources */,
 				20B6B7D025D572E60004B9CB /* SnowPalette.swift in Sources */,
+				205B625325D5C24D006156E0 /* SnowErrors.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -586,6 +599,7 @@
 				20B6B7E625D578580004B9CB /* SnowReader.swift in Sources */,
 				20B6B7E425D578540004B9CB /* SnowMetadata.swift in Sources */,
 				20B6B7E525D578560004B9CB /* SnowPalette.swift in Sources */,
+				205B625425D5C24D006156E0 /* SnowErrors.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

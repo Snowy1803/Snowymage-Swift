@@ -38,10 +38,7 @@ struct SnowymageDocument: FileDocument {
             image = img
         case .sni:
             var reader = SnowReader(source: data)
-            guard let img = reader.read() else {
-                throw CocoaError(.fileReadCorruptFile)
-            }
-            image = img
+            image = try reader.read()
         default:
             throw CocoaError(.fileReadUnsupportedScheme)
         }
@@ -53,7 +50,7 @@ struct SnowymageDocument: FileDocument {
             guard let data = CFDataCreateMutable(nil, 0) else {
                 throw CocoaError(.fileWriteOutOfSpace)
             }
-            guard let dest = CGImageDestinationCreateWithData(data, kUTTypePNG, 1, nil) else {
+            guard let dest = CGImageDestinationCreateWithData(data, UTType.png.identifier as CFString, 1, nil) else {
                 throw CocoaError(.fileWriteUnsupportedScheme)
             }
             CGImageDestinationAddImage(dest, image, nil)

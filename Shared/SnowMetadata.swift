@@ -20,6 +20,16 @@ struct SnowMetadata: OptionSet {
     var bytesPerPixel: Int {
         (self.contains(.grayscale) ? 1 : 3) + (self.contains(.alpha) ? 1 : 0)
     }
+    
+    func validate() -> Bool {
+        if self.contains(.clip) && !self.contains(.alpha) {
+            return false
+        }
+        if self.contains(.paletteCompression) && !self.contains(.palette) {
+            return false
+        }
+        return true
+    }
 }
 
 extension SnowMetadata: CustomStringConvertible {

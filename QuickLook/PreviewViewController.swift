@@ -41,9 +41,7 @@ class PreviewViewController: NSViewController, QLPreviewingController {
             
             var reader = SnowReader(source: data)
             
-            guard let img = reader.read() else {
-                throw CocoaError(.fileReadCorruptFile)
-            }
+            let img = try reader.read()
             
             let image = NSImage(cgImage: img, size: NSSize(width: img.width, height: img.height))
             

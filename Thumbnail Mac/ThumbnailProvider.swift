@@ -18,7 +18,7 @@ class ThumbnailProvider: QLThumbnailProvider {
         
         var reader = SnowReader(source: data)
         
-        guard let img = reader.read() else {
+        guard let img = try? reader.read() else {
             handler(nil, CocoaError(.fileReadCorruptFile))
             return
         }
