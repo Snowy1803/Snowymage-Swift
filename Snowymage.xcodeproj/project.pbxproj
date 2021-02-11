@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		205B623B25D579FA006156E0 /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 205B623A25D579FA006156E0 /* QuickLook.framework */; };
+		205B623E25D579FA006156E0 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 205B623D25D579FA006156E0 /* PreviewViewController.swift */; };
+		205B624125D579FA006156E0 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 205B623F25D579FA006156E0 /* MainInterface.storyboard */; };
+		205B624525D579FA006156E0 /* QuickLook iOS.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 205B623925D579FA006156E0 /* QuickLook iOS.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		205B624925D57A20006156E0 /* SnowMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B6B79925D45E1D0004B9CB /* SnowMetadata.swift */; };
+		205B624A25D57A22006156E0 /* SnowPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B6B79F25D468850004B9CB /* SnowPalette.swift */; };
+		205B624B25D57A25006156E0 /* SnowReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B6B79C25D462D20004B9CB /* SnowReader.swift */; };
 		20B6B78925D45B140004B9CB /* SnowymageApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B6B77525D45B130004B9CB /* SnowymageApp.swift */; };
 		20B6B78A25D45B140004B9CB /* SnowymageApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B6B77525D45B130004B9CB /* SnowymageApp.swift */; };
 		20B6B78B25D45B140004B9CB /* SnowymageDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B6B77625D45B130004B9CB /* SnowymageDocument.swift */; };
@@ -44,6 +51,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		205B624325D579FA006156E0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 20B6B77025D45B130004B9CB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 205B623825D579FA006156E0;
+			remoteInfo = "QuickLook iOS";
+		};
 		20B6B7B225D55F880004B9CB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 20B6B77025D45B130004B9CB /* Project object */;
@@ -86,6 +100,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				205B624525D579FA006156E0 /* QuickLook iOS.appex in Embed App Extensions */,
 				20B6B7DE25D5781F0004B9CB /* Thumbnail iOS.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
@@ -94,6 +109,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		205B623925D579FA006156E0 /* QuickLook iOS.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "QuickLook iOS.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		205B623A25D579FA006156E0 /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
+		205B623D25D579FA006156E0 /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
+		205B624025D579FA006156E0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		205B624225D579FA006156E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		20B6B77525D45B130004B9CB /* SnowymageApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowymageApp.swift; sourceTree = "<group>"; };
 		20B6B77625D45B130004B9CB /* SnowymageDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowymageDocument.swift; sourceTree = "<group>"; };
 		20B6B77725D45B130004B9CB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -122,6 +142,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		205B623625D579FA006156E0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				205B623B25D579FA006156E0 /* QuickLook.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		20B6B77A25D45B140004B9CB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -164,6 +192,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		205B623C25D579FA006156E0 /* QuickLook iOS */ = {
+			isa = PBXGroup;
+			children = (
+				205B623D25D579FA006156E0 /* PreviewViewController.swift */,
+				205B623F25D579FA006156E0 /* MainInterface.storyboard */,
+				205B624225D579FA006156E0 /* Info.plist */,
+			);
+			path = "QuickLook iOS";
+			sourceTree = "<group>";
+		};
 		20B6B76F25D45B130004B9CB = {
 			isa = PBXGroup;
 			children = (
@@ -173,6 +211,7 @@
 				20B6B7AA25D55F870004B9CB /* QuickLook */,
 				20B6B7C425D571BB0004B9CB /* Thumbnail Mac */,
 				20B6B7D825D5781F0004B9CB /* Thumbnail iOS */,
+				205B623C25D579FA006156E0 /* QuickLook iOS */,
 				20B6B7A725D55F870004B9CB /* Frameworks */,
 				20B6B77E25D45B140004B9CB /* Products */,
 			);
@@ -200,6 +239,7 @@
 				20B6B7A625D55F870004B9CB /* QuickLook.appex */,
 				20B6B7C025D571BB0004B9CB /* Thumbnail Mac.appex */,
 				20B6B7D625D5781F0004B9CB /* Thumbnail iOS.appex */,
+				205B623925D579FA006156E0 /* QuickLook iOS.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -226,6 +266,7 @@
 			children = (
 				20B6B7A825D55F870004B9CB /* Quartz.framework */,
 				20B6B7C125D571BB0004B9CB /* QuickLookThumbnailing.framework */,
+				205B623A25D579FA006156E0 /* QuickLook.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -262,6 +303,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		205B623825D579FA006156E0 /* QuickLook iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 205B624825D579FA006156E0 /* Build configuration list for PBXNativeTarget "QuickLook iOS" */;
+			buildPhases = (
+				205B623525D579FA006156E0 /* Sources */,
+				205B623625D579FA006156E0 /* Frameworks */,
+				205B623725D579FA006156E0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "QuickLook iOS";
+			productName = "QuickLook iOS";
+			productReference = 205B623925D579FA006156E0 /* QuickLook iOS.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		20B6B77C25D45B140004B9CB /* Snowymage (iOS) */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 20B6B79325D45B140004B9CB /* Build configuration list for PBXNativeTarget "Snowymage (iOS)" */;
@@ -275,6 +333,7 @@
 			);
 			dependencies = (
 				20B6B7DD25D5781F0004B9CB /* PBXTargetDependency */,
+				205B624425D579FA006156E0 /* PBXTargetDependency */,
 			);
 			name = "Snowymage (iOS)";
 			productName = "Snowymage (iOS)";
@@ -361,6 +420,9 @@
 				LastSwiftUpdateCheck = 1250;
 				LastUpgradeCheck = 1250;
 				TargetAttributes = {
+					205B623825D579FA006156E0 = {
+						CreatedOnToolsVersion = 12.5;
+					};
 					20B6B77C25D45B140004B9CB = {
 						CreatedOnToolsVersion = 12.5;
 					};
@@ -396,11 +458,20 @@
 				20B6B7A525D55F870004B9CB /* QuickLook */,
 				20B6B7BF25D571BB0004B9CB /* Thumbnail Mac */,
 				20B6B7D525D5781F0004B9CB /* Thumbnail iOS */,
+				205B623825D579FA006156E0 /* QuickLook iOS */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		205B623725D579FA006156E0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				205B624125D579FA006156E0 /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		20B6B77B25D45B140004B9CB /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -442,6 +513,17 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		205B623525D579FA006156E0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				205B623E25D579FA006156E0 /* PreviewViewController.swift in Sources */,
+				205B624B25D57A25006156E0 /* SnowReader.swift in Sources */,
+				205B624925D57A20006156E0 /* SnowMetadata.swift in Sources */,
+				205B624A25D57A22006156E0 /* SnowPalette.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		20B6B77925D45B140004B9CB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -504,6 +586,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		205B624425D579FA006156E0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 205B623825D579FA006156E0 /* QuickLook iOS */;
+			targetProxy = 205B624325D579FA006156E0 /* PBXContainerItemProxy */;
+		};
 		20B6B7B325D55F880004B9CB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 20B6B7A525D55F870004B9CB /* QuickLook */;
@@ -522,6 +609,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		205B623F25D579FA006156E0 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				205B624025D579FA006156E0 /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
 		20B6B7AD25D55F870004B9CB /* PreviewViewController.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -533,6 +628,49 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		205B624625D579FA006156E0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = PKKP3P6RGM;
+				INFOPLIST_FILE = "QuickLook iOS/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "fr.orbisec.Snowymage.QuickLook-iOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		205B624725D579FA006156E0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = PKKP3P6RGM;
+				INFOPLIST_FILE = "QuickLook iOS/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "fr.orbisec.Snowymage.QuickLook-iOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		20B6B79125D45B140004B9CB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -875,6 +1013,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		205B624825D579FA006156E0 /* Build configuration list for PBXNativeTarget "QuickLook iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				205B624625D579FA006156E0 /* Debug */,
+				205B624725D579FA006156E0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		20B6B77325D45B130004B9CB /* Build configuration list for PBXProject "Snowymage" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
