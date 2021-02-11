@@ -14,3 +14,10 @@ enum SnowReaderError: Error {
     case decodingFailed
     case trailingData
 }
+
+enum SnowWriterError: Error {
+    case invalidMetadata
+    case metadataMismatch
+    case paletteTooBig
+    case imageTooBig
+}

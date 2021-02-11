@@ -21,9 +21,7 @@ struct SnowymageDocument: FileDocument {
         self.image = image
     }
 
-    static var readableContentTypes: [UTType] { [.png, .sni] }
-    
-    static var writableContentTypes: [UTType] { [.png, .sni] }
+    static var readableContentTypes: [UTType] { [.sni, .png] }
 
     init(configuration: ReadConfiguration) throws {
         guard let data = configuration.file.regularFileContents else {
@@ -59,10 +57,8 @@ struct SnowymageDocument: FileDocument {
             }
             return .init(regularFileWithContents: data as Data)
         case .sni:
-            guard var writer = SnowWriter(source: image),
-                  let data = writer.write() else {
-                throw CocoaError(.fileWriteUnsupportedScheme)
-            }
+            var writer = try SnowWriter(source: image)
+            let data = try writer.write()
             return .init(regularFileWithContents: data as Data)
         default:
             throw CocoaError(.fileReadUnsupportedScheme)

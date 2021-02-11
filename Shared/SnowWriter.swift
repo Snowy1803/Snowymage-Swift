@@ -19,7 +19,7 @@ struct SnowWriter {
     var palette: SnowPalette?
     var lookup: [Data: UInt8]?
     
-    init?(source: CGImage, metadata: SnowMetadata? = nil) {
+    init(source: CGImage, metadata: SnowMetadata? = nil) throws {
         self.metadata = metadata ?? []
         self.source = source
         self.input = Data()
@@ -27,10 +27,14 @@ struct SnowWriter {
         if metadata == nil {
             deduceMetadata()
         }
+        guard self.metadata.validate() else {
+            throw SnowWriterError.invalidMetadata
+        }
+        
         guard let image = source.copy(colorSpace: CGColorSpace(name: self.metadata.contains(.grayscale) ? CGColorSpace.linearGray : CGColorSpace.sRGB)!),
               let data = image.dataProvider?.data as Data? else {
             // color space probably incompatible, we could convert with Core Image, or just fail
-            return nil
+            throw SnowWriterError.metadataMismatch
         }
         self.source = image
         self.input = data
@@ -54,23 +58,26 @@ struct SnowWriter {
         }
     }
     
-    mutating func write() -> Data? {
-        writeHeader()
-        guard writePalette() else { return nil }
+    mutating func write() throws -> Data {
+        try writeHeader()
+        try writePalette()
         writeImage()
         return output
     }
     
-    mutating func writeHeader() {
+    mutating func writeHeader() throws {
         print("Writing header")
         write(short: 0x534d) // SM
         write(byte: metadata.rawValue)
+        guard source.width <= UInt16.max && source.height <= UInt16.max else {
+            throw SnowWriterError.imageTooBig
+        }
         write(position: source.width)
         write(position: source.height)
     }
     
-    mutating func writePalette() -> Bool {
-        guard metadata.contains(.palette) else { return true }
+    mutating func writePalette() throws {
+        guard metadata.contains(.palette) else { return }
         print("Computing palette")
         // Our raw palette data
         var pal = Data()
@@ -82,7 +89,7 @@ struct SnowWriter {
             if let _ = lookup[color] {
                 // ignore here, not optimized
             } else if lookup.count == 256 {
-                return false
+                throw SnowWriterError.paletteTooBig
             } else {
                 lookup[color] = UInt8(lookup.count)
                 pal.append(color)
@@ -93,7 +100,6 @@ struct SnowWriter {
         self.lookup = lookup
         write(byte: UInt8(lookup.count))
         output.append(pal)
-        return true
     }
     
     mutating func writeImage() {
