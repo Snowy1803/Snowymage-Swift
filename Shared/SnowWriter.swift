@@ -191,3 +191,51 @@ struct SnowWriter {
         }
     }
 }
+
+extension SnowWriter {
+    static func best(source: CGImage) async throws -> Data? {
+        let r = try await allPossible(source: source).min(by: { $0.count < $1.count })
+        if let r = r {
+            print("Chose: \(r[r.startIndex + 2])")
+        } else {
+            print("None found")
+        }
+        return r
+    }
+    
+    static func allPossible(source: CGImage) async throws -> [Data] {
+        try await Task.withGroup(resultType: Data?.self) { group in
+            for meta in allMetadatas() {
+                await group.add {
+                    do {
+                        var writer = try SnowWriter(source: source, metadata: meta)
+                        return try writer.write()
+                    } catch let e {
+                        print("Failed for metadata \(meta): \(e)")
+                        return nil
+                    }
+                }
+            }
+            
+            var result = [Data]()
+            while let data = try await group.next() {
+                if let data = data {
+                    result.append(data)
+                }
+            }
+            return result
+        }
+    }
+    
+    private static func allMetadatas() -> [SnowMetadata] {
+        var all = [SnowMetadata]()
+        for meta2 in [SnowMetadata(), SnowMetadata.clip] {
+            for meta3 in [SnowMetadata(), SnowMetadata.grayscale] {
+                for meta4 in [SnowMetadata(), SnowMetadata.palette, SnowMetadata.paletteCompression] {
+                    all.append([meta2, meta3, meta4])
+                }
+            }
+        }
+        return all
+    }
+}

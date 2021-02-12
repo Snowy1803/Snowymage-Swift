@@ -57,11 +57,31 @@ struct SnowymageDocument: FileDocument {
             }
             return .init(regularFileWithContents: data as Data)
         case .sni:
-            var writer = try SnowWriter(source: image)
-            let data = try writer.write()
-            return .init(regularFileWithContents: data as Data)
+            return .init(regularFileWithContents: try bestWriter())
         default:
             throw CocoaError(.fileReadUnsupportedScheme)
+        }
+    }
+    
+    func bestWriter() throws -> Data {
+        var result: Data?
+        var error: Error?
+        runAsyncAndBlock {
+            do {
+                guard let data = try await SnowWriter.best(source: image) else {
+                    throw CocoaError(.fileWriteUnknown)
+                }
+                result = data
+            } catch let e {
+                error = e
+            }
+        }
+        if let error = error {
+            throw error
+        } else if let result = result {
+            return result
+        } else {
+            throw CocoaError(.fileWriteUnknown)
         }
     }
 }
