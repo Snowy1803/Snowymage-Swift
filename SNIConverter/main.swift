@@ -10,7 +10,18 @@ import CoreGraphics
 import ArgumentParser
 
 //@main
+struct Converter: ParsableCommand {
+    static var configuration: CommandConfiguration {
+        CommandConfiguration(commandName: "sni-converter", abstract: "Utility to convert from/to SNI images", version: "1.0", subcommands: [SNIConverter.self, PNGConverter.self], defaultSubcommand: SNIConverter.self)
+    }
+}
+
 struct SNIConverter: ParsableCommand {
+    
+    static var configuration: CommandConfiguration {
+        CommandConfiguration(commandName: "to-sni", abstract: "Converts from PNG/SNI to SNI")
+    }
+    
     @Flag(name: .shortAndLong, help: "The verbosity level")
     var verbose: Int
 
@@ -102,4 +113,58 @@ struct SNIConverter: ParsableCommand {
     }
 }
 
-SNIConverter.main()
+struct PNGConverter: ParsableCommand {
+    
+    static var configuration: CommandConfiguration {
+        CommandConfiguration(commandName: "to-png", abstract: "Converts from SNI to PNG")
+    }
+    
+    @Flag(name: .shortAndLong, help: "The verbosity level")
+    var verbose: Int
+
+    @Flag(name: .shortAndLong, help: "Quiet execution")
+    var quiet: Bool = false
+
+    @Option(name: .shortAndLong, help: "The input, an SNI file")
+    var input: String
+    
+    @Option(name: .shortAndLong, help: "The output, a PNG file")
+    var output: String
+    
+    @Flag(name: .long, help: "Overwrite the output file if it already exists")
+    var overwrite: Bool = false
+    
+    func validate() throws {
+        if verbose > 0 && quiet {
+            throw ValidationError("Verbose and Quiet are mutually exclusive")
+        }
+    }
+
+    func run() throws {
+        // If more than the max, use max verbosity
+        let verbosity = quiet ? .quiet : VerbosityLevel(rawValue: verbose + 1) ?? .debug
+        
+        let input = try Data(contentsOf: URL(fileURLWithPath: input, relativeTo: URL(fileURLWithPath: FileManager.default.currentDirectoryPath)))
+        
+        var reader = SnowReader(source: input, verbosity: verbosity)
+        let image = try reader.read()
+        
+        
+        // Encode the image to PNG
+        
+        guard let data = CFDataCreateMutable(nil, 0) else {
+            throw CocoaError(.fileWriteOutOfSpace)
+        }
+        guard let dest = CGImageDestinationCreateWithData(data, "public.png" as CFString, 1, nil) else {
+            throw CocoaError(.fileWriteUnsupportedScheme)
+        }
+        CGImageDestinationAddImage(dest, image, nil)
+        guard CGImageDestinationFinalize(dest) else {
+            throw CocoaError(.fileWriteUnknown)
+        }
+        
+        try (data as Data).write(to: URL(fileURLWithPath: self.output, relativeTo: URL(fileURLWithPath: FileManager.default.currentDirectoryPath)), options: overwrite ? [] : .withoutOverwriting)
+    }
+}
+
+Converter.main()
