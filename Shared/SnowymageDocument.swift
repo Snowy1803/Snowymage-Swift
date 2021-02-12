@@ -63,6 +63,7 @@ struct SnowymageDocument: FileDocument {
         }
     }
     
+    /// This is a function that calls async methods from a sync function. The protocol requires data synchronisously, therefore we have to do it this way
     func bestWriter() throws -> Data {
         var result: Data?
         var error: Error?

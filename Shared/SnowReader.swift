@@ -8,24 +8,34 @@
 import Foundation
 import CoreGraphics
 
+/// This structure permits to read SNI images from a source Data. Initialize the struct with a source Data, then call `read()` to get the image.
 struct SnowReader {
+    /// The source data, raw SNI bytes
     var source: Data
+    /// The current location in the data of the reader
     var location: Int = 0
     
+    /// The metadata found in the file header
     var metadata: SnowMetadata = []
+    /// The found width of the image
     var width: Int = 0
+    /// The found height of the image
     var height: Int = 0
+    /// The found palette in the image. Nil if palette is disabled.
     var palette: SnowPalette?
     
-    /// no idea what it is
+    /// The number of pixels per byte in the Compressed Palette format.
     var cmpixelsPerByte: Int = 1
     
+    /// Attempts to read the source data, and returns the image if it succeeds.
+    /// Throws a SnowReaderError if an error occurs.
     mutating func read() throws -> CGImage {
         try readHeader()
         try readPalette()
         return try readImage()
     }
     
+    /// Reads the header of the file: Magic number, metadata and size
     mutating func readHeader() throws {
         try skip(bytes: 2) // magic number SM
         metadata = SnowMetadata(rawValue: try readByte())
@@ -36,6 +46,7 @@ struct SnowReader {
         height = try readPosition()
     }
     
+    /// Reads and parses the palette, if enabled
     mutating func readPalette() throws {
         if metadata.contains(.palette) {
             let size = Int(try readByte())
@@ -54,8 +65,9 @@ struct SnowReader {
         }
     }
     
+    /// Reads the actual image data
     mutating func readImage() throws -> CGImage {
-        // Here we convert to raw bitmap data: ARGB, un-paletted
+        // Here we convert to raw bitmap data: RGB(A) or white(-alpha), un-paletted
         var converted = Data(count: metadata.bytesPerPixel * width * height)
         
         for x in 0..<width {
@@ -67,7 +79,7 @@ struct SnowReader {
                 if len + off > height {
                     throw SnowReaderError.malformedClip
                 }
-                // skipped bytes will keep zeroed bytes
+                // skipped bytes will keep zeroed bytes, so remain transparent
             } else {
                 off = 0
                 len = height
@@ -115,11 +127,13 @@ struct SnowReader {
         }
     }
     
+    /// Skips some bytes
     private mutating func skip(bytes: Int) throws {
-        try ensureReadable(bytesAhead: 1)
+        try ensureReadable(bytesAhead: bytes)
         location += bytes
     }
     
+    /// Reads a byte
     private mutating func readByte() throws -> UInt8 {
         try ensureReadable(bytesAhead: 1)
         let byte = source[location]
@@ -127,6 +141,7 @@ struct SnowReader {
         return byte
     }
     
+    /// Reads a big endian short
     private mutating func readShort() throws -> UInt16 {
         try ensureReadable(bytesAhead: 2)
         let bytes = source[location ... location + 1]
@@ -138,6 +153,7 @@ struct SnowReader {
         return UInt16(bigEndian: short)
     }
     
+    /// Reads a position (byte or short depending on metadata) and converts it to an Int
     private mutating func readPosition() throws -> Int {
         if metadata.contains(.small) {
             return Int(try readByte())
@@ -146,6 +162,7 @@ struct SnowReader {
         }
     }
     
+    /// Throws an exception if the specified number of bytes could not be found ahead
     private func ensureReadable(bytesAhead: Int) throws {
         if location + bytesAhead > source.endIndex {
             throw SnowReaderError.unexpectedEOF

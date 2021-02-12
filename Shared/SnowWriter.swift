@@ -8,17 +8,28 @@
 import Foundation
 import CoreGraphics
 
+/// This structure permits to write SNI images to Data. Initialize the struct with a source CGImage and some metadata, then call `write()` to get the data. You may also use `best` to automatically choose the best metadata
 struct SnowWriter {
+    /// The source image. It must be of the color space of the metadata (RGB(A) or Grayscale).
     var source: CGImage
+    /// The wanted metadata. The alpha bit and the small bit will be changed automatically.
     var metadata: SnowMetadata
     
-    /// `input` is raw bitmap data, we can assume the color space is correct, and it's 8 bits per component
+    /// `input` is raw bitmap data, we assume the color space is correct, and that it's 8 bits per component
     var input: Data
+    /// The SNI output
     var output: Data
     
+    /// The composed palette
     var palette: SnowPalette?
+    /// The palette lookup table. Raw color data as key, the palette index as value. Speeds up writing images with palettes.
     var lookup: [Data: UInt8]?
     
+    /// Creates a SnowWriter for the specified image with the given metadata
+    /// - Parameters:
+    ///   - source: The source image. It must be of the color space of the metadata (RGB(A) or Grayscale).
+    ///   - metadata: The wanted metadata. The alpha bit and the small bit will be changed automatically.
+    /// - Throws: SnowWriterError if the metadata is not supported
     init(source: CGImage, metadata: SnowMetadata? = nil) throws {
         self.metadata = metadata ?? []
         self.source = source
@@ -42,6 +53,7 @@ struct SnowWriter {
         self.input = data
     }
     
+    /// Detects the needed color space. Called by `init` if the metadata is not provided
     mutating func deduceMetadata() {
         if source.colorSpace?.model == .monochrome {
             metadata.insert(.grayscale)
@@ -50,6 +62,7 @@ struct SnowWriter {
         }
     }
     
+    /// Replaces the `alpha` and the `small` bits of the metadata according to the source image.
     mutating func normalizeMetadata() {
         if source.alphaInfo == .none {
             metadata.remove(.alpha)
@@ -63,6 +76,7 @@ struct SnowWriter {
         }
     }
     
+    /// Attempts to write the data to SNI.
     mutating func write() throws -> Data {
         try writeHeader()
         try writePalette()
@@ -70,6 +84,8 @@ struct SnowWriter {
         return output
     }
     
+    /// Writes the SNI header: Magic number, metadata and size
+    /// - Throws: SnowReaderError.imageTooBig if the image size doesn't fits in two shorts.
     mutating func writeHeader() throws {
         print("Writing header")
         write(short: 0x534d) // SM
@@ -81,6 +97,8 @@ struct SnowWriter {
         write(position: source.height)
     }
     
+    /// Writes the palette of the image, if enabled
+    /// - Throws: SnowWriterError.paletteTooBig if there is more than 256 colors.
     mutating func writePalette() throws {
         guard metadata.contains(.palette) else { return }
         print("Computing palette")
@@ -107,6 +125,7 @@ struct SnowWriter {
         output.append(pal)
     }
     
+    /// Writes the actual image data from the raw input
     mutating func writeImage() {
         print("Writing image")
         for x in 0..<source.width {
@@ -175,14 +194,17 @@ struct SnowWriter {
         }
     }
     
+    /// Writes a big-endian short to the output buffer
     mutating func write(short: UInt16) {
         output.append(withUnsafeBytes(of: short.bigEndian) { Data($0) })
     }
     
+    /// Writes a byte to the output buffer
     mutating func write(byte: UInt8) {
         output.append(byte)
     }
     
+    /// Writes a position (byte or short depending on metadata)
     mutating func write(position: Int) {
         if metadata.contains(.small) {
             write(byte: UInt8(position))
@@ -193,6 +215,10 @@ struct SnowWriter {
 }
 
 extension SnowWriter {
+    /// Finds and returns the smallest SNI Data that represents the given image
+    /// - Parameter source: the image to encode
+    /// - Throws: Should never throw
+    /// - Returns: The smallest SNI Data found
     static func best(source: CGImage) async throws -> Data? {
         let r = try await allPossible(source: source).min(by: { $0.count < $1.count })
         if let r = r {
@@ -203,6 +229,10 @@ extension SnowWriter {
         return r
     }
     
+    /// Finds all the possible SNI Data that represents the given image
+    /// - Parameter source: the image to encode
+    /// - Throws: Should never throw
+    /// - Returns: All SNI Datas representing the same image, with different metadata
     static func allPossible(source: CGImage) async throws -> [Data] {
         try await Task.withGroup(resultType: Data?.self) { group in
             for meta in allMetadatas() {
@@ -227,12 +257,13 @@ extension SnowWriter {
         }
     }
     
+    /// Returns the possible metadata an image can have
     private static func allMetadatas() -> [SnowMetadata] {
         var all = [SnowMetadata]()
-        for meta2 in [SnowMetadata(), SnowMetadata.clip] {
-            for meta3 in [SnowMetadata(), SnowMetadata.grayscale] {
-                for meta4 in [SnowMetadata(), SnowMetadata.palette, SnowMetadata.paletteCompression] {
-                    all.append([meta2, meta3, meta4])
+        for clip in [SnowMetadata(), SnowMetadata.clip] {
+            for gray in [SnowMetadata(), SnowMetadata.grayscale] {
+                for pal in [SnowMetadata(), SnowMetadata.palette, SnowMetadata.paletteCompression] {
+                    all.append([clip, gray, pal])
                 }
             }
         }
