@@ -13,7 +13,7 @@ struct SnowReader {
     /// The source data, raw SNI bytes
     var source: Data
     /// The verbosity level of the reader
-    var verbodity: VerbosityLevel = .error
+    var verbosity: VerbosityLevel = .error
     /// The current location in the data of the reader
     var location: Int = 0
     
@@ -39,19 +39,37 @@ struct SnowReader {
     
     /// Reads the header of the file: Magic number, metadata and size
     mutating func readHeader() throws {
+        if verbosity >= .info {
+            print("Reading image header")
+        }
         try skip(bytes: 2) // magic number SM
         metadata = SnowMetadata(rawValue: try readByte())
+        if verbosity >= .debug {
+            print("Found metadata: \(metadata)")
+        }
         guard metadata.validate() else {
+            if verbosity >= .error {
+                print("Found metadata is not valid")
+            }
             throw SnowReaderError.invalidMetadata
         }
         width = try readPosition()
         height = try readPosition()
+        if verbosity >= .debug {
+            print("Found image size: \(width) * \(height)")
+        }
     }
     
     /// Reads and parses the palette, if enabled
     mutating func readPalette() throws {
         if metadata.contains(.palette) {
+            if verbosity >= .info {
+                print("Reading image palette")
+            }
             let size = Int(try readByte())
+            if verbosity >= .debug {
+                print("\(size) colors in palette")
+            }
             let data = source[location ... location + (size * metadata.bytesPerPixel) - 1]
             location += size * metadata.bytesPerPixel
             let palette = SnowPalette(colors: size, bytes: data)
@@ -63,12 +81,18 @@ struct SnowReader {
                     cmpixelsPerByte += 1
                     loop *= palette.colors + 1
                 }
+                if verbosity >= .debug {
+                    print("Compression: \(cmpixelsPerByte) pixels/byte")
+                }
             }
         }
     }
     
     /// Reads the actual image data
     mutating func readImage() throws -> CGImage {
+        if verbosity >= .info {
+            print("Reading image data")
+        }
         // Here we convert to raw bitmap data: RGB(A) or white(-alpha), un-paletted
         var converted = Data(count: metadata.bytesPerPixel * width * height)
         
@@ -79,6 +103,9 @@ struct SnowReader {
                 off = try readPosition()
                 len = try readPosition()
                 if len + off > height {
+                    if verbosity >= .error {
+                        print("Clip invalid: offset \(off) length \(len) exceeds height \(height)")
+                    }
                     throw SnowReaderError.malformedClip
                 }
                 // skipped bytes will keep zeroed bytes, so remain transparent
@@ -119,12 +146,18 @@ struct SnowReader {
             }
         }
         guard location == source.endIndex else {
+            if verbosity >= .error {
+                print("Error: image contains more data than expected")
+            }
             throw SnowReaderError.trailingData
         }
         
         if let img = CGImage(width: width, height: height, bitsPerComponent: 8, bitsPerPixel: 8 * metadata.bytesPerPixel, bytesPerRow: metadata.bytesPerPixel * width, space: CGColorSpace(name: metadata.contains(.grayscale) ? CGColorSpace.linearGray : CGColorSpace.sRGB)!, bitmapInfo: [CGBitmapInfo(rawValue: (metadata.contains(.alpha) ? CGImageAlphaInfo.last : CGImageAlphaInfo.none).rawValue)], provider: CGDataProvider(data: converted as CFData)!, decode: nil, shouldInterpolate: false, intent: .defaultIntent) {
             return img
         } else {
+            if verbosity >= .error {
+                print("Error: raw data could not be decoded by Core Graphics")
+            }
             throw SnowReaderError.decodingFailed
         }
     }
@@ -167,6 +200,9 @@ struct SnowReader {
     /// Throws an exception if the specified number of bytes could not be found ahead
     private func ensureReadable(bytesAhead: Int) throws {
         if location + bytesAhead > source.endIndex {
+            if verbosity >= .error {
+                print("Error: more data was expected, but found end of file")
+            }
             throw SnowReaderError.unexpectedEOF
         }
     }
