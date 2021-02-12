@@ -15,6 +15,9 @@ struct SnowWriter {
     /// The wanted metadata. The alpha bit and the small bit will be changed automatically.
     var metadata: SnowMetadata
     
+    /// The verbosity level of the writer
+    var verbosity: VerbosityLevel
+    
     /// `input` is raw bitmap data, we assume the color space is correct, and that it's 8 bits per component
     var input: Data
     /// The SNI output
@@ -30,9 +33,10 @@ struct SnowWriter {
     ///   - source: The source image. It must be of the color space of the metadata (RGB(A) or Grayscale).
     ///   - metadata: The wanted metadata. The alpha bit and the small bit will be changed automatically.
     /// - Throws: SnowWriterError if the metadata is not supported
-    init(source: CGImage, metadata: SnowMetadata? = nil) throws {
+    init(source: CGImage, metadata: SnowMetadata? = nil, verbosity: VerbosityLevel = .error) throws {
         self.metadata = metadata ?? []
         self.source = source
+        self.verbosity = verbosity
         self.input = Data()
         self.output = Data()
         if metadata == nil {
@@ -40,6 +44,9 @@ struct SnowWriter {
         }
         normalizeMetadata()
         guard self.metadata.validate() else {
+            if verbosity >= .error {
+                print("Error: given metadata doesn't exist: \(self.metadata)")
+            }
             throw SnowWriterError.invalidMetadata
         }
         
@@ -47,6 +54,9 @@ struct SnowWriter {
               let data = image.dataProvider?.data as Data?,
               self.metadata.bytesPerPixel * image.width * image.height == data.count else {
             // color space probably incompatible, we could convert with Core Image, or just fail
+            if verbosity >= .error {
+                print("[\(self.metadata.rawValue)] Error: could not convert image to an 8 bit/component image with the given colorspace. Image color space is \(source.colorSpace?.name as String? ?? "<not found>")")
+            }
             throw SnowWriterError.metadataMismatch
         }
         self.source = image
@@ -87,10 +97,18 @@ struct SnowWriter {
     /// Writes the SNI header: Magic number, metadata and size
     /// - Throws: SnowReaderError.imageTooBig if the image size doesn't fits in two shorts.
     mutating func writeHeader() throws {
-        print("Writing header")
+        if verbosity >= .info {
+            print("[\(metadata.rawValue)] Writing header")
+            if verbosity >= .debug {
+                print(metadata)
+            }
+        }
         write(short: 0x534d) // SM
         write(byte: metadata.rawValue)
         guard source.width <= UInt16.max && source.height <= UInt16.max else {
+            if verbosity >= .error {
+                print("[\(metadata.rawValue)] Error: image exceeds the limit of \(UInt16.max) * \(UInt16.max) pixels: Image is \(source.width) * \(source.height)")
+            }
             throw SnowWriterError.imageTooBig
         }
         write(position: source.width)
@@ -101,7 +119,9 @@ struct SnowWriter {
     /// - Throws: SnowWriterError.paletteTooBig if there is more than 256 colors.
     mutating func writePalette() throws {
         guard metadata.contains(.palette) else { return }
-        print("Computing palette")
+        if verbosity >= .info {
+            print("[\(metadata.rawValue)] Computing palette")
+        }
         // Our raw palette data
         var pal = Data()
         // Our lookup table
@@ -112,6 +132,9 @@ struct SnowWriter {
             if let _ = lookup[color] {
                 // ignore here, not optimized
             } else if lookup.count == 256 {
+                if verbosity >= .error {
+                    print("[\(metadata.rawValue)] Error: image has more than 256 colors")
+                }
                 throw SnowWriterError.paletteTooBig
             } else {
                 lookup[color] = UInt8(lookup.count)
@@ -127,7 +150,9 @@ struct SnowWriter {
     
     /// Writes the actual image data from the raw input
     mutating func writeImage() {
-        print("Writing image")
+        if verbosity >= .info {
+            print("[\(metadata.rawValue)] Writing image")
+        }
         for x in 0..<source.width {
             var off = 0
             var len = source.height
@@ -219,8 +244,8 @@ extension SnowWriter {
     /// - Parameter source: the image to encode
     /// - Throws: Should never throw
     /// - Returns: The smallest SNI Data found
-    static func best(source: CGImage) async throws -> Data? {
-        let r = try await allPossible(source: source).min(by: { $0.count < $1.count })
+    static func best(source: CGImage, verbosity: VerbosityLevel = .error) async throws -> Data? {
+        let r = try await allPossible(source: source, verbosity: verbosity).min(by: { $0.count < $1.count })
         if let r = r {
             print("Chose: \(r[r.startIndex + 2])")
         } else {
@@ -233,12 +258,12 @@ extension SnowWriter {
     /// - Parameter source: the image to encode
     /// - Throws: Should never throw
     /// - Returns: All SNI Datas representing the same image, with different metadata
-    static func allPossible(source: CGImage) async throws -> [Data] {
+    static func allPossible(source: CGImage, verbosity: VerbosityLevel = .error) async throws -> [Data] {
         try await Task.withGroup(resultType: Data?.self) { group in
             for meta in allMetadatas() {
                 await group.add {
                     do {
-                        var writer = try SnowWriter(source: source, metadata: meta)
+                        var writer = try SnowWriter(source: source, metadata: meta, verbosity: verbosity)
                         return try writer.write()
                     } catch let e {
                         print("Failed for metadata \(meta): \(e)")

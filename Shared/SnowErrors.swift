@@ -32,3 +32,10 @@ enum SnowWriterError: Error {
     /// The image is bigger than supported (65535 * 65535)
     case imageTooBig
 }
+
+enum VerbosityLevel: Int, Comparable {
+    case quiet
+    case error
+    case info
+    case debug
+}
