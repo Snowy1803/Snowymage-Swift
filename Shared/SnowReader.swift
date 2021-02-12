@@ -12,6 +12,8 @@ import CoreGraphics
 struct SnowReader {
     /// The source data, raw SNI bytes
     var source: Data
+    /// The verbosity level of the reader
+    var verbodity: VerbosityLevel = .error
     /// The current location in the data of the reader
     var location: Int = 0
     

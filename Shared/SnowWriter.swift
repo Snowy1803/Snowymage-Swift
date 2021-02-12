@@ -90,6 +90,9 @@ struct SnowWriter {
         try writeHeader()
         try writePalette()
         writeImage()
+        if verbosity >= .debug {
+            print("[\(metadata.rawValue)] Image encoding successful: \(output.count) bytes")
+        }
         return output
     }
     
@@ -244,11 +247,16 @@ extension SnowWriter {
     /// - Throws: Should never throw
     /// - Returns: The smallest SNI Data found
     static func best(source: CGImage, verbosity: VerbosityLevel = .error) async throws -> Data? {
-        let r = try await allPossible(source: source, verbosity: verbosity).min(by: { $0.count < $1.count })
+        // If the verbosity level is error, we don't show the errors for all the metadatas that fail
+        let r = try await allPossible(source: source, verbosity: verbosity == .error ? .quiet : verbosity).min(by: { $0.count < $1.count })
         if let r = r {
-            print("Chose: \(r[r.startIndex + 2])")
+            if verbosity >= .info {
+                print("Chose metadata: \(r[r.startIndex + 2])")
+            }
         } else {
-            print("None found")
+            if verbosity >= .error {
+                print("No metadata can encode this image! Ensure the color space is supported, and the image is not too big.")
+            }
         }
         return r
     }
@@ -265,7 +273,9 @@ extension SnowWriter {
                         var writer = try SnowWriter(source: source, metadata: meta, verbosity: verbosity)
                         return try writer.write()
                     } catch let e {
-                        print("Failed for metadata \(meta): \(e)")
+                        if verbosity >= .info {
+                            print("Failed for metadata \(meta): \(e)")
+                        }
                         return nil
                     }
                 }

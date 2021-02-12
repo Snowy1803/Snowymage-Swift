@@ -34,9 +34,13 @@ enum SnowWriterError: Error {
 }
 
 enum VerbosityLevel: Int, Comparable {
+    /// No message will ever be printed
     case quiet
+    /// Messages will be printed on errors
     case error
+    /// Messages will be printed when changing phase
     case info
+    /// All messages will be printed
     case debug
     
     static func < (lhs: VerbosityLevel, rhs: VerbosityLevel) -> Bool {
