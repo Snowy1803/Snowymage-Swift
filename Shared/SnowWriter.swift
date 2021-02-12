@@ -14,7 +14,6 @@ struct SnowWriter {
     var source: CGImage
     /// The wanted metadata. The alpha bit and the small bit will be changed automatically.
     var metadata: SnowMetadata
-    
     /// The verbosity level of the writer
     var verbosity: VerbosityLevel
     

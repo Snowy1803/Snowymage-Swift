@@ -38,4 +38,8 @@ enum VerbosityLevel: Int, Comparable {
     case error
     case info
     case debug
+    
+    static func < (lhs: VerbosityLevel, rhs: VerbosityLevel) -> Bool {
+        lhs.rawValue < rhs.rawValue
+    }
 }
