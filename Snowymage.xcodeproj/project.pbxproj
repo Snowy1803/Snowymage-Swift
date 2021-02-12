@@ -134,6 +134,7 @@
 
 /* Begin PBXFileReference section */
 		2059337F25D6F91500757587 /* SNIConverter.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SNIConverter.entitlements; sourceTree = "<group>"; };
+		2059338025D7247A00757587 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		205B623925D579FA006156E0 /* QuickLook iOS.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "QuickLook iOS.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		205B623A25D579FA006156E0 /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
 		205B623D25D579FA006156E0 /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
@@ -251,6 +252,7 @@
 		20B6B76F25D45B130004B9CB = {
 			isa = PBXGroup;
 			children = (
+				2059338025D7247A00757587 /* README.md */,
 				20B6B77425D45B130004B9CB /* Shared */,
 				20B6B77F25D45B140004B9CB /* iOS */,
 				20B6B78625D45B140004B9CB /* macOS */,
