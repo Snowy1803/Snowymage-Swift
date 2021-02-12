@@ -33,7 +33,8 @@ struct SnowWriter {
         }
         
         guard let image = source.copy(colorSpace: CGColorSpace(name: self.metadata.contains(.grayscale) ? CGColorSpace.linearGray : CGColorSpace.sRGB)!),
-              let data = image.dataProvider?.data as Data? else {
+              let data = image.dataProvider?.data as Data?,
+              self.metadata.bytesPerPixel * image.width * image.height == data.count else {
             // color space probably incompatible, we could convert with Core Image, or just fail
             throw SnowWriterError.metadataMismatch
         }
@@ -42,11 +43,6 @@ struct SnowWriter {
     }
     
     mutating func deduceMetadata() {
-        if source.alphaInfo == .none {
-            metadata.remove(.alpha)
-        } else {
-            metadata.insert(.alpha)
-        }
         if source.colorSpace?.model == .monochrome {
             metadata.insert(.grayscale)
         } else {
@@ -55,6 +51,11 @@ struct SnowWriter {
     }
     
     mutating func normalizeMetadata() {
+        if source.alphaInfo == .none {
+            metadata.remove(.alpha)
+        } else {
+            metadata.insert(.alpha)
+        }
         if source.width < 256 && source.height < 256 {
             metadata.insert(.small)
         } else {
@@ -118,18 +119,24 @@ struct SnowWriter {
                         break
                     }
                     let srcloc = source.height * y * metadata.bytesPerPixel + x * metadata.bytesPerPixel
-                    if input[srcloc + metadata.bytesPerPixel - 2] != 0 { // last component (alpha) is not transparent?
+                    if input[srcloc + metadata.bytesPerPixel - 1] != 0 { // last component (alpha) is not transparent?
                         off = y
                         break
                     }
                 }
-                for y in (off..<source.height).reversed() {
-                    let srcloc = source.height * y * metadata.bytesPerPixel + x * metadata.bytesPerPixel
-                    if input[srcloc + metadata.bytesPerPixel - 2] != 0 {
-                        len = source.height - y - off
-                        break
+                if off == source.height {
+                    len = 0
+                } else {
+                    for y in (off ... source.height - 1).reversed() {
+                        let srcloc = source.height * y * metadata.bytesPerPixel + x * metadata.bytesPerPixel
+                        if input[srcloc + metadata.bytesPerPixel - 1] != 0 {
+                            len = y - off
+                            break
+                        }
                     }
                 }
+                write(position: off)
+                write(position: len)
             }
             
             if let lookup = lookup {
