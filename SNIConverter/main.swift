@@ -25,14 +25,14 @@ struct SNIConverter: ParsableCommand {
     @Flag(name: .shortAndLong, help: "The verbosity level")
     var verbose: Int
 
-    @Flag(name: .shortAndLong, help: "Quiet execution")
+    @Flag(name: .shortAndLong, help: "Quiet errors")
     var quiet: Bool = false
 
     @Option(name: .shortAndLong, help: "The input. May be PNG or SNI (detected by magic number)")
     var input: String
     
-    @Option(name: .shortAndLong, help: "The output, an SNI file")
-    var output: String
+    @Option(name: .shortAndLong, help: "The output, an SNI file (default: just adding .sni)")
+    var output: String?
     
     @Flag(name: .long, help: "Overwrite the output file if it already exists")
     var overwrite: Bool = false
@@ -101,7 +101,14 @@ struct SNIConverter: ParsableCommand {
                     output = result
                 }
                 
-                try output.write(to: URL(fileURLWithPath: self.output, relativeTo: URL(fileURLWithPath: FileManager.default.currentDirectoryPath)), options: overwrite ? [] : .withoutOverwriting)
+                var url: String
+                if let loc = self.output {
+                    url = loc
+                } else {
+                    url = self.input + ".sni"
+                }
+                
+                try output.write(to: URL(fileURLWithPath: url, relativeTo: URL(fileURLWithPath: FileManager.default.currentDirectoryPath)), options: overwrite ? [] : .withoutOverwriting)
                 
             } catch let e {
                 error = e
